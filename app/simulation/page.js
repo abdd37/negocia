@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 const titres = {
@@ -9,7 +9,7 @@ const titres = {
   entretien: '🎯 Convaincre en entretien',
 }
 
-export default function Simulation() {
+function SimulationContent() {
   const searchParams = useSearchParams()
   const scenario = searchParams.get('scenario') || 'voiture'
   const [messages, setMessages] = useState([
@@ -65,5 +65,13 @@ export default function Simulation() {
         </button>
       </div>
     </main>
+  )
+}
+
+export default function Simulation() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0F172A] flex items-center justify-center text-white">Chargement...</div>}>
+      <SimulationContent />
+    </Suspense>
   )
 }
